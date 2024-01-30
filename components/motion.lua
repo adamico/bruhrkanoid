@@ -1,8 +1,10 @@
-local Motion = Component(function(params)
-  return {
-    velocityX = params.velocityX or 0,
-    velocityY = params.velocityy or 0,
-    dx = params.dx or 0,
-    dy = params.dy or 0
-  }
-end)
+local Motion = Class('Motion')
+
+function Motion:init(vx, vy, dx, dy)
+    self.vx = vx or 0
+    self.vy = vy or 0
+    self.dx = dx or 0
+    self.dy = dy or 0
+end
+
+return Motion

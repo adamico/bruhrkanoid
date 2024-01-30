@@ -1,32 +1,42 @@
-local class = require 'lib.30log'
-local ECS = require 'lib.ECS'
-local Component, System, World, Query = ECS.Component, ECS.System, ECS.World, ECS.Query 
-local world = World()
+Class = require 'lib.30log'
+ECS = require 'ecs'
 
 -- Components
 local Position = require 'components.position'
 local Motion = require 'components.motion'
 local MotionControl = require 'components.motion_control'
+local Display = require 'components.display'
+local PlayerState = require 'components.player_state'
 
 -- Systems
-local MovementSystem = require 'systems.movement_system'
-local InputSystem = require 'systems.input_system'
-
+local movementSystem = require 'systems.movement_system'
+local inputSystem = require 'systems.input_system'
+local displaySystem = require 'systems.display_system'
 -- World
-local update_frequency = 60
-world({ MovementSystem, InputSystem }, update_frequency)
+local world = require 'world'
 
 -- Entities
+local player_sprite = {}
 
--- assuming we're playing, if dead: remove some components
-local player = World:Entity(
-	Position({ x = 0, y = 0 }),
-	Motion({ velocityX = 300, velocityY = 0 }),
-	MotionControl({ left = 'left', right = 'right' })
-)
+local player = {
+  name = 'player1',
+	Position(),
+	Motion(300, 0),
+	MotionControl('left', 'right'),
+	PlayerState(),
+	Display(player_sprite)
+}
 
 function love.load()
-	
+	world.addEntity(player)
+	world.addSystems({
+	  movementSystem,
+	  inputSystem
+	})
+end
+
+function love.update(dt)
+	ECS.update(world, dt)
 end
 
 function love.draw()

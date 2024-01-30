@@ -1,16 +1,14 @@
-local MovementSystem = System('process', 1, Query.All(Position, Motion))
+local movementSystem = ECS.processingSystem()
 
-function 
+movementSystem.filter = ECS.requireAll('name', 'position', 'motion')
 
-function MovementSystem:Update(Time)
-  local dt = Time.DeltaFixed
-  for i, entity in self:Result():Iterator() do
-    local motion = entity[Motion]
-    local position = entity[Position]
-    
-    position.x = position.x + motion.dx * motion.velocityX * dt
-    position.y = position.y + motion.dy * motion.velocityY * dt
-  end
+function movementSystem:process(e, dt) 
+  local px, py = e.position.x, e.position.y
+  local dx, dy = e.motion.dx, e.motion.dy
+  local vx, vy = e.motion.vx, e.motion.vy
+  e.position.x = px + dx * vx * dt
+  e.position.y = px + dy * vy * dt
+  print(("%s has been moved to position %d/%d"):format(e.name, e.position.x, e.position.y))
 end
 
-return MovementSystem
+return movementSystem

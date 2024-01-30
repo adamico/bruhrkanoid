@@ -1,19 +1,21 @@
-local InputSystem = System('process', 1, Query.All(Motion, MotionControl))
+local inputSystem = ECS.processingSystem()
 
-function InputSystem:Update(Time)
-  local dt = Time.DeltaFixed
+inputSystem.filter = ECS.requireAll('name', 'motionControl')
 
-  for i, entity in self:Result():Iterator() do
-    local control = entity[MotionControl]
-    local motion = entity[Motion]
+function inputSystem:process(e, dt)
+    local control = e.motionControl
+    local motion = e.motion
     
     if love.keyboard.isDown(control.left) then
         motion.dx = -1
+        print(("%s is moving left"):format(e.name))
     end
     if love.keyboard.isDown(control.right) then
         motion.dx = 1
+        print(("%s is moving right"):format(e.name))
     end
+    
   end
 end
 
-return InputSystem
+return inputSystem

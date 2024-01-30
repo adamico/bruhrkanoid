@@ -1,6 +1,8 @@
-local Position = Component(function(param)
-  return {
-    x = param.x or 0,
-    y = param.y or 0
-  }
-end)
+local Position = Class('Position')
+
+function Position:init(x, y)
+  self.x = x or 0
+  self.y = y or 0
+end
+
+return Position
