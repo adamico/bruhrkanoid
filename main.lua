@@ -3,35 +3,21 @@
 require 'tools'
 
 local gamestate = require 'lib.hump.gamestate'
-local ecs = require 'lib.tiny'
 local center = require 'lib.center'
 
 Class = require 'lib.30log'
 
-Game = require 'states.game'
-
-local world = require 'world'
-
-center:setupScreen(800, 800)
+local menu = require 'states.menu'
 
 function love.load()
 	gamestate.registerEvents()
-  gamestate.switch(Game)
+  gamestate.switch(menu)
 end
 
 function love.update(dt)
-	if world then
-		world:update(dt, ecs.rejectAny('isDrawSystem'))
-	end
 end
 
 function love.draw()
-	local dt = love.timer.getDelta()
-	center:start()
-	if world then
-		world:update(dt, ecs.requireAll('isDrawSystem'))
-	end
-	center:finish()
 end
 
 function love.resize(width, height)

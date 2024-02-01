@@ -15,6 +15,10 @@ function physicsSystem:onAdd(e)
   physics_world:add(e, px, py, width, height)
 end
 
+function physicsSystem:onRemove(e)
+  physics_world:remove(e)
+end
+
 function physicsSystem:process(e, dt)
   if e.motion then physicsSystem:move(e, dt) end
 

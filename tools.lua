@@ -11,7 +11,7 @@ function _G.CenterText(string_array, color, vertical_offset)
     widths[i] = text:getWidth()
   end
   
-  local width = math.max(table.unpack(widths))
+  local width = math.max(unpack(widths))
   
   local height = font:getHeight()
   love.graphics.setColor(color)

@@ -1,4 +1,7 @@
+local gamestate = require 'lib.hump.gamestate'
+
 local menu = {}
+local pre_game = require 'states.pre_game'
 
 local screen_width = love.graphics.getWidth()
 local screen_height = love.graphics.getHeight()
@@ -16,7 +19,7 @@ end
 
 function menu:keypressed(key)
   if key == 'return' then
-    gamestate.switch(PreGame)
+    gamestate.switch(pre_game)
   end
 end
 

@@ -1,4 +1,5 @@
 local ecs = require 'lib.tiny'
+
 local inputSystem = ecs.processingSystem()
 
 inputSystem.filter = ecs.requireAll('name', 'motionControl')
