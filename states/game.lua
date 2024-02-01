@@ -9,6 +9,9 @@ local game_over = require 'states.game_over'
 local world = require 'world'
 local Creator = require 'entity_creator'
 
+-- balldx = 0
+-- balldy = 0
+
 center:setupScreen(800, 800)
 
 function game:enter()
@@ -25,17 +28,13 @@ function game:draw()
 		world:update(dt, ecs.requireAll('isDrawSystem'))
 	end
 	center:finish()
+	-- love.graphics.print("balldx: "..tostring(balldx), 20, 20)
+	-- love.graphics.print("balldy: "..tostring(balldy), 20, 40)
 end
 
 function game:update(dt)
 	if world then
 		world:update(dt, ecs.rejectAny('isDrawSystem'))
-	end
-end
-
-function game:keypressed(k)
-	if k == 'c' then
-		gamestate.switch(game_over)
 	end
 end
 

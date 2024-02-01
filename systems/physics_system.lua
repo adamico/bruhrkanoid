@@ -22,6 +22,11 @@ end
 function physicsSystem:process(e, dt)
   if e.motion then physicsSystem:move(e, dt) end
 
+  -- if e.isBall then
+  --   balldx = e.motion.dx
+  --   balldy = e.motion.dy
+  -- end
+
   if e.position.y >= screen_height + screen_height/2 then
     ecs.removeEntity(world, e)
     physics_world:remove(e)

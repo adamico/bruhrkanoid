@@ -35,13 +35,19 @@ function pre_game:draw()
   local margin = 100
   love.graphics.setColor(0.8, 0.8, 0.8)
   love.graphics.rectangle('fill', margin, margin, screen_width-margin*2, screen_height/2 - margin)
-  CenterText({'Position the bat and left click to start the game'}, {0, 0, 0.2}, screen_height/4)
+  CenterText({'Press Space or Left Mouse button to start'}, {0, 0, 0.2}, screen_height/4)
 end
 
 function pre_game:mousereleased(x, y, button, istouch, presses)
   if button == 1 then
     gamestate.switch(game)
   end
+end
+
+function pre_game:keypressed(k)
+	if k == "space" then
+		gamestate.switch(game)
+	end
 end
 
 return pre_game

@@ -6,8 +6,18 @@ function Creator:createGame()
 	self:setLevelDimensions()
 	self:createWalls()
 	self:createBricks()
-  self:createBall()
-  self:createPlayer()
+
+	local pwidth, pheight = 80, 20
+	local px = (self.screen_width - pwidth) / 2
+  local py = self.screen_height - self.wall_thickness - pheight
+  self:createPlayer(px, py, pwidth, pheight)
+
+	local bx = px + pwidth / 2
+	local by = py - pheight / 2
+	math.randomseed(os.clock()*100000000000)
+	local range = { min = -10, max = 10 }
+	local dx, dy = math.random(range.min, range.max)/10, -1
+	self:createBall(bx, by, 300, 300, dx, dy)
 end
 
 function Creator:setLevelDimensions()
@@ -40,20 +50,14 @@ function Creator:createBricks()
 	end
 end
 
-function Creator:createPlayer()
+function Creator:createPlayer(px, py, pwidth, pheight)
   local Player = require 'entities.player'
-  local pwidth, pheight = 80, 20
-  local px = (self.screen_width - pwidth) / 2
-  local py = self.screen_height - self.wall_thickness - pheight
   world:add(Player('player1', px, py, pwidth, pheight))
 end
 
-function Creator:createBall()
+function Creator:createBall(bx, by, vx, vy, dx, dy)
   local Ball = require 'entities.ball'
-  local bradius = 10
-  local bx = (self.screen_width - bradius) / 2
-  local by = (self.screen_height - bradius) / 2
-  world:add(Ball('ball1', bx, by, bradius))
+  world:add(Ball('ball1', bx, by, vx, vy, dx, dy))
 end
 
 return Creator

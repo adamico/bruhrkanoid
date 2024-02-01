@@ -7,11 +7,11 @@ local center = require 'lib.center'
 
 Class = require 'lib.30log'
 
-local menu = require 'states.menu'
+local initial_state = require 'states.pre_game'
 
 function love.load()
 	gamestate.registerEvents()
-  gamestate.switch(menu)
+  gamestate.switch(initial_state)
 end
 
 function love.update(dt)
@@ -27,5 +27,9 @@ end
 function love.keypressed(k)
 	if k == 'escape' then
 		love.event.quit()
+	end
+
+	if k == 'r' then
+		gamestate.switch(initial_state)
 	end
 end
