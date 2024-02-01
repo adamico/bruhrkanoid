@@ -1,4 +1,6 @@
 local ecs = require 'lib.tiny'
+
+local colors = require 'colors'
 local drawSystem = ecs.processingSystem()
 
 drawSystem.filter = ecs.requireAll('display', 'position', ecs.rejectAny('isWall'))
@@ -22,8 +24,10 @@ function drawSystem:shape(e)
   local mode = display.mode
   local px, py = e.position.x, e.position.y
 
+  love.graphics.setColor(display.color)
   if shape == 'circle' then drawSystem:circle(mode, px, py, display.radius) end
   if shape == 'rectangle' then drawSystem:rect(mode, px, py, display.width, display.height) end
+  love.graphics.setColor(colors.WHITE)
 end
 
 return drawSystem
