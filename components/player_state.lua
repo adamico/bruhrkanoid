@@ -1,3 +1,3 @@
-local PlayerState = Component(function(initial_state)
+local PlayerState = Class('PlayerState')
 
-end)
+return PlayerState

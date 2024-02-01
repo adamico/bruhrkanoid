@@ -1,43 +1,34 @@
+-- main.lua
+
+require 'tools'
+local gamestate = require 'lib.hump.gamestate'
+local ecs = require 'lib.tiny'
 Class = require 'lib.30log'
-ECS = require 'ecs'
 
--- Components
-local Position = require 'components.position'
-local Motion = require 'components.motion'
-local MotionControl = require 'components.motion_control'
-local Display = require 'components.display'
-local PlayerState = require 'components.player_state'
+Game = require 'states.game'
 
--- Systems
-local movementSystem = require 'systems.movement_system'
-local inputSystem = require 'systems.input_system'
-local displaySystem = require 'systems.display_system'
--- World
 local world = require 'world'
 
--- Entities
-local player_sprite = {}
-
-local player = {
-  name = 'player1',
-	Position(),
-	Motion(300, 0),
-	MotionControl('left', 'right'),
-	PlayerState(),
-	Display(player_sprite)
-}
-
 function love.load()
-	world.addEntity(player)
-	world.addSystems({
-	  movementSystem,
-	  inputSystem
-	})
+	gamestate.registerEvents()
+  gamestate.switch(Game)
 end
 
 function love.update(dt)
-	ECS.update(world, dt)
+	if world then
+		world:update(dt, ecs.rejectAny('isDrawSystem'))
+	end
 end
 
 function love.draw()
+	local dt = love.timer.getDelta()
+	if world then
+		world:update(dt, ecs.requireAll('isDrawSystem'))
+	end
+end
+
+function love.keypressed(k)
+	if k == 'escape' then
+		love.event.quit()
+	end
 end
