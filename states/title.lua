@@ -15,7 +15,7 @@ function title:keypressed(key)
 end
 
 function title:draw()
-	love.graphics.print('Title screen', windowWidth / 2, windowHeight /2)
+	love.graphics.print('Bruhrkanoid\n da game!', windowWidth / 2, windowHeight /2)
 end
 
 return title

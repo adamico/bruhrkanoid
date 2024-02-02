@@ -8,25 +8,7 @@ local physics_world = require 'physics_world'
 local input = require 'input'
 
 local physics = love.physics
-
-local shapesDict = {
-  circle = {
-    drawFunction = function (mode, positionX, positionY, dimensions)
-      return love.graphics.circle(mode, positionX, positionY, dimensions.radius)
-    end,
-    physicsFunction = function (dimensions)
-      return physics.newCircleShape(dimensions.radius)
-    end
-  },
-  rectangle = {
-    draw = function (mode, positionX, positionY, dimensions)
-      return love.graphics.rectangle(mode, positionX, positionY, dimensions.width, dimensions.height)
-    end,
-    physics = function (dimensions)
-      return physics.newRectangleShape(dimensions.width, dimensions.height)
-    end
-  }
-}
+local shapesDict = require 'shapes_dictionary'
 
 return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions, velocityXValue, velocityYValue)
   local entity = Entity()
@@ -37,10 +19,12 @@ return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions
   fixture:setUserData(entity)
 
   local windowWidth, windowHeight = love.window.getMode()
-  local leftBoundary = dimensions.radius + 2
-  local rightBoundary = windowWidth - dimensions.radius - 2
-  local topBoundary = dimensions.radius + 2
-  local bottomBoundary = windowHeight - dimensions.radius - 2
+  local playerWidth = dimensions.width or dimensions.radius
+  local playerHeight = dimensions.height or dimensions.radius
+  local leftBoundary = 2
+  local rightBoundary = windowWidth - playerWidth - 2
+  local topBoundary = 2
+  local bottomBoundary = windowHeight - playerHeight * 2
   local velocity = {
     xValue = velocityXValue,
     yValue = velocityYValue,
@@ -49,8 +33,7 @@ return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions
   }
 
   function entity:draw()
-    local bodyCenterX, bodyCenterY = body:getWorldCenter()
-    shapesDict[shapeType].drawFunction(drawMode, bodyCenterX, bodyCenterY, dimensions)
+    shapesDict[shapeType].drawFunction(drawMode, body, shape)
   end
 
   function entity:update()
