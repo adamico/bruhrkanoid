@@ -10,6 +10,7 @@ local screenWidth, screenHeight, flags = love.window.getMode()
 
 function creator.createGame()
   creator.createWalls()
+  creator.createBricks()
   creator.createPlayer()
   creator.createBall()
 
@@ -20,7 +21,7 @@ function creator.createWalls()
   local wall = require('entities.wall')
   local wallThickness = 20
   local color = { 0.2, 0.2, 0.4 }
-  
+
   local top_wall = wall(
     screenWidth/2, wallThickness/2,
     'static', 'rectangle', 'fill',
@@ -45,6 +46,27 @@ function creator.createWalls()
   world:addEntity(top_wall)
   world:addEntity(left_wall)
   world:addEntity(right_wall)
+end
+
+function creator.createBricks()
+  local brick = require('entities.brick')
+  local brickWidth, brickHeight = 50, 20
+  local gap = 10
+  local bricks = {}
+  for row = 1, 6 do
+    for column = 1, 20 do
+      local aBrick = brick(
+         (brickWidth + gap) * column, (brickHeight + gap) * row,
+        'static', 'rectangle', 'line',
+        { width = brickWidth, height = brickHeight},
+        { 1, 1, 1 }, 1
+      )
+      table.insert(bricks, aBrick)
+    end
+  end
+  for i, brick in pairs(bricks) do
+    world:addEntity(brick)
+  end
 end
 
 function creator.createPlayer()
