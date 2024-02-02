@@ -14,12 +14,6 @@ local shapesDict = require 'shapes_dictionary'
 return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions, velocityXValue, velocityYValue)
   local entity = Entity()
 
-  local body = physics.newBody(physics_world, positionX, positionY, bodyType)
-  local shape = shapesDict[shapeType].physicsFunction(dimensions)
-  local fixture = physics.newFixture(body, shape, 1)
-  fixture:setRestitution(1)
-  fixture:setUserData(entity)
-
   local velocity = {
     xValue = velocityXValue,
     yValue = velocityYValue,
@@ -27,17 +21,19 @@ return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions
     yDelta = 1
   }
 
+  local body = physics.newBody(physics_world, positionX, positionY, bodyType)
+  body:setMass(32)
+
+  body:setLinearVelocity(velocity.xValue * velocity.xDelta , velocity.yValue * velocity.yDelta )
+
+  local shape = shapesDict[shapeType].physicsFunction(dimensions)
+  local fixture = physics.newFixture(body, shape, 1)
+  fixture:setRestitution(1)
+  fixture:setUserData(entity)
+
   function entity:draw()
     local bodyCenterX, bodyCenterY = body:getWorldCenter()
     shapesDict[shapeType].drawFunction(drawMode, bodyCenterX, bodyCenterY, dimensions)
-  end
-
-  function entity:update()
-    if velocity.xDelta ~= 0 and velocity.yDelta ~= 0 then
-      velocity.xDelta = velocity.xDelta * math.sqrt(2)/2
-      velocity.yDelta = velocity.yDelta * math.sqrt(2)/2
-    end
-    body:setLinearVelocity(velocity.xValue * velocity.xDelta , velocity.yValue * velocity.yDelta )
   end
 
   entity

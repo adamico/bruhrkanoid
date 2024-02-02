@@ -13,11 +13,7 @@ local end_contact_callback = function(fixture_a, fixture_b, contact)
   if entity_b.end_contact then entity_b:end_contact() end
 end
 
-local meter = 64
-love.physics.setMeter(meter)
-local gravity = 9.81 * meter
-
-local gravityX, gravityY = 0, gravity
+local gravityX, gravityY = 0, 0
 local bodiesAllowedToSleep = false
 
 local physics_world = love.physics.newWorld(gravityX, gravityY, bodiesAllowedToSleep)
