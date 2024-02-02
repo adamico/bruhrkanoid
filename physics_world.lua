@@ -9,8 +9,8 @@
 local end_contact_callback = function(fixture_a, fixture_b, contact)
   local entity_a = fixture_a:getUserData()
   local entity_b = fixture_b:getUserData()
-  if entity_a.end_contact then entity_a:end_contact() end
-  if entity_b.end_contact then entity_b:end_contact() end
+  if entity_a.endContact then entity_a:endContact() end
+  if entity_b.endContact then entity_b:endContact() end
 end
 
 local gravityX, gravityY = 0, 0

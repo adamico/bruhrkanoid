@@ -2,6 +2,7 @@
 
 local Concord = require 'lib.concord'
 local components = require 'components'
+local world = require 'world'
 
 local physicsSystem = Concord.system({
   pool = { 'physics' }

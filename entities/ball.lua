@@ -14,10 +14,12 @@ local shapesDict = require 'shapes_dictionary'
 return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions, velocityXValue, velocityYValue)
   local entity = Entity()
 
+  local entityMaxVelocity = 600
+
   local velocity = {
     xValue = velocityXValue,
     yValue = velocityYValue,
-    xDelta = 0,
+    xDelta = 0.3,
     yDelta = 1
   }
 
@@ -28,12 +30,37 @@ return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions
 
   local shape = shapesDict[shapeType].physicsFunction(dimensions)
   local fixture = physics.newFixture(body, shape, 1)
+  fixture:setFriction(0)
   fixture:setRestitution(1)
   fixture:setUserData(entity)
 
   function entity:draw()
     local bodyCenterX, bodyCenterY = body:getWorldCenter()
-    shapesDict[shapeType].drawFunction(drawMode, bodyCenterX, bodyCenterY, dimensions)
+    shapesDict[shapeType].drawFunction(drawMode, body, shape)
+  end
+
+  function entity:update()
+    local currentVelocityX, currentVelocityY = body:getLinearVelocity()
+    local totalVelocity = math.abs(currentVelocityX) + math.abs(currentVelocityY)
+
+    local velocityXisCritical = math.abs(currentVelocityX) > entityMaxVelocity * 2
+    local velocityYisCritical = math.abs(currentVelocityY) > entityMaxVelocity * 2
+
+    if velocityXisCritical or velocityYisCritical then
+      body:setLinearVelocity(
+        currentVelocityX * 0.5,
+        currentVelocityY * 0.5
+      )
+    end
+
+  
+    if totalVelocity > entityMaxVelocity then
+      body:setLinearDamping(0.1)
+    else
+      body:setLinearDamping(0)
+    end
+
+    print("ball velocity: "..currentVelocityX.."/"..currentVelocityY)
   end
 
   entity

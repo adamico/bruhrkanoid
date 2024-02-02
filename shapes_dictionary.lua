@@ -2,8 +2,9 @@ local physics = love.physics
 
 local shapesDict = {
   circle = {
-    drawFunction = function (mode, positionX, positionY, dimensions)
-      return love.graphics.circle(mode, positionX, positionY, dimensions.radius)
+    drawFunction = function (mode, body, shape)
+      local positionX, positionY = body:getWorldCenter()
+      return love.graphics.circle(mode, positionX, positionY, shape:getRadius())
     end,
     physicsFunction = function (dimensions)
       return physics.newCircleShape(dimensions.radius)

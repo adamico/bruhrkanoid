@@ -5,6 +5,7 @@ local creator = {}
 local world = require 'world'
 local draw_system = require 'systems.draw_system'
 local physics_system = require 'systems.physics_system'
+local brick_destruction_system = require 'systems.brick_destruction_system'
 
 local screenWidth, screenHeight, flags = love.window.getMode()
 
@@ -14,7 +15,7 @@ function creator.createGame()
   creator.createPlayer()
   creator.createBall()
 
-  world:addSystems(physics_system, draw_system)
+  world:addSystems(physics_system, draw_system, brick_destruction_system)
 end
 
 function creator.createWalls()
@@ -76,7 +77,7 @@ function creator.createPlayer()
     playerPosition.x, playerPosition.y,
     'kinematic', 'rectangle', 'line',
     { width = playerWidth, height = playerHeight },
-    300, 300
+    500, 500
   )
   world:addEntity(player)
 end

@@ -17,16 +17,20 @@ return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions
   local fixture = physics.newFixture(body, shape)
   fixture:setUserData(entity)
 
+  entity
+  :give('physics', body, shape, fixture)
+  :give('drawable')
+  :give('health', healthValue)
+
   function entity:draw()
     love.graphics.setColor(color)
     shapesDict[shapeType].drawFunction(drawMode, body, shape)
     love.graphics.setColor(1, 1, 1)
   end
 
-  entity
-  :give('physics', body, shape, fixture)
-  :give('drawable')
-  :give('health', healthValue)
+  function entity:endContact()
+    self.health.value = self.health.value - 1
+  end
 
   return entity
 end
