@@ -19,12 +19,10 @@ return function (positionX, positionY, bodyType, shapeType, drawMode, dimensions
   fixture:setUserData(entity)
 
   local windowWidth, windowHeight = love.window.getMode()
-  local playerWidth = dimensions.width or dimensions.radius
-  local playerHeight = dimensions.height or dimensions.radius
-  local leftBoundary = 2
-  local rightBoundary = windowWidth - playerWidth - 2
-  local topBoundary = 2
-  local bottomBoundary = windowHeight - playerHeight * 2
+  local leftBoundary = 60
+  local rightBoundary = windowWidth - 60
+  local topBoundary = 50
+  local bottomBoundary = windowHeight - dimensions.height * 2
   local velocity = {
     xValue = velocityXValue,
     yValue = velocityYValue,

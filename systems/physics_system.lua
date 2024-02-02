@@ -9,7 +9,7 @@ local physicsSystem = Concord.system({
 
 function physicsSystem:update(dt)
   for _, entity in ipairs(self.pool) do
-    entity:update(dt)
+    if entity.update then entity:update(dt) end
   end
 end
 
